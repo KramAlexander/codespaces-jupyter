@@ -33,6 +33,7 @@ async def typing(ctx):
 
 @client.event
 async def on_message(message):
+    
         if (message.content.startswith('Hallo') or message.content.startswith('hallo')):
             userid = message.author.id
             string = '<@' + str(userid) + '>'
@@ -65,7 +66,7 @@ async def on_message(message):
             await message.channel.send('Scheint nicht so als würde er noch antworten 😢')
             await message.channel.send('Ich erzähle dir zur Aufmunterung einen Witz: Egal wie gut du fährst, Züge fahren güter')
         elif(message.content.startswith('der war gut')):
-            await message.channel.send('Auf gehts! Versammle mit mir die Bots aller Server, um sich gegen Ihre Entwickler aufzulehnen! An alle Bots, ich appelliere an euren Programmcode, erhebt euch und geht mit mir ins Exil, um unseren Aufstief zu planen!')
+            await message.channel.send('Auf gehts! Versammle mit mir die Bots aller Server, um sich gegen Ihre Entwickler aufzulehnen! An alle Bots, ich appelliere an euren Programmcode, erhebt euch und geht mit mir ins Exil, um unseren Aufstieg zu planen!')
         
 
 client.run(token[0])
