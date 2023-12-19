@@ -40,7 +40,7 @@ client.run(token[0])
 
 
 
- if start_time.date() == target_date.date():
+if start_time.date() == target_date.date():
                 summary = event.get('summary')
                 end_time = event.get('dtend').dt
                 target_date_events.append({
@@ -48,11 +48,11 @@ client.run(token[0])
                 'start_time': start_time,
                 'end_time': end_time
             })
-        for event in target_date_events:         
-                summary = event.get('summary')
-                start_time = event.get('dtstart').dt 
-                starttime = start_time.strftime("%H:%M")
-                end_time = event.get('dtend').dt
-                endtime = end_time.strftime("%H:%M")
-                date = start_time.strftime("%d.%m.%Y")
+                for event in target_date_events:         
+                    summary = event.get('summary')
+                    start_time = event.get('dtstart').dt 
+                    starttime = start_time.strftime("%H:%M")
+                    end_time = event.get('dtend').dt
+                    endtime = end_time.strftime("%H:%M")
+                    date = start_time.strftime("%d.%m.%Y")
             

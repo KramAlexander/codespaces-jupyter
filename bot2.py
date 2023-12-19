@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import json
 import time
 import discord
 import discord
@@ -16,17 +17,37 @@ import requests
 from icalendar import Calendar
 from datetime import datetime
 
+llmModel = "llama2-uncensored"
+
+question = "Warum sind Bananen krumm"
+
 with open('token.txt') as file:
     token = file.readlines()
-    
 
 
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="bot!", intents=intents)
 bot.remove_command("help")
+print(question)
 
-
+@bot.command()
+async def question(ctx, arg):
+    answer = ""
+    questionModel = json.dumps({
+        "model" : llmModel.lower(), # Das LLM Modell, was genutzt werden soll
+        "prompt" : arg,             # Der Prompt vom User
+        "stream": True              # Ob es als Stream ausgegeben werden soll (Einfach auf True lassen)
+    })
+    #async with ctx.typing():
+    
+    # Code von Leo und Pascal angepasst
+    with requests.post(url="http://127.0.0.1:11434/api/generate" , data=questionModel, stream=True) as response:
+        for line in response.iter_lines():
+            if line:
+                answer += json.loads(line)["response"]
+                #await asyncio.sleep(2)
+    await ctx.send(answer)
 
 @bot.event
 async def on_ready():
