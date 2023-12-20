@@ -29,24 +29,23 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="bot!", intents=intents)
 bot.remove_command("help")
-print(question)
 
 @bot.command()
-async def question(ctx, arg):
+async def question(ctx, *args):
     answer = ""
     questionModel = json.dumps({
-        "model" : llmModel.lower(), # Das LLM Modell, was genutzt werden soll
-        "prompt" : arg,             # Der Prompt vom User
-        "stream": True              # Ob es als Stream ausgegeben werden soll (Einfach auf True lassen)
-    })
-    #async with ctx.typing():
+            "model" : llmModel.lower(), # Das LLM Modell, was genutzt werden soll
+            "prompt": ' '.join(args),# Der Prompt vom User
+            "stream": True              # Ob es als Stream ausgegeben werden soll (Einfach auf True lassen)
+        })
+    async with ctx.typing():
     
     # Code von Leo und Pascal angepasst
-    with requests.post(url="http://127.0.0.1:11434/api/generate" , data=questionModel, stream=True) as response:
-        for line in response.iter_lines():
-            if line:
-                answer += json.loads(line)["response"]
-                #await asyncio.sleep(2)
+        with requests.post(url="http://127.0.0.1:11434/api/generate" , data=questionModel, stream=True) as response:
+            for line in response.iter_lines():
+                if line:
+                    answer += json.loads(line)["response"]
+                    await asyncio.sleep(2)
     await ctx.send(answer)
 
 @bot.event
@@ -60,7 +59,7 @@ async def embed(ctx):
         await asyncio.sleep(2)
     
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
-    target_date = datetime(2023, 12, 18)
+    target_date = datetime(2023, 12, 20)
     response = requests.get(cal_url)
     if response.status_code == 200:
                 # Parse the iCal data
