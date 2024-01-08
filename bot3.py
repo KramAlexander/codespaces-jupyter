@@ -1,53 +1,30 @@
+# imports and extensions
 import asyncio
 import datetime
-import json
-
 import discord
 import discord.utils
-
 from discord.ext import commands
-from urllib.request import urlopen
 import pytz
 import requests
 from icalendar import Calendar
 from datetime import datetime
 
-llmModel = "llama2-uncensored"
-
-question = "Warum sind Bananen krumm"
-
+# opening token from token.txt
 with open('token.txt') as file:
     token = file.readlines()
 
-
+# bot setup
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="bot!", intents=intents)
 bot.remove_command("help")
 
-@bot.command()
-async def question(ctx, *args):
-    answer = ""
-    questionModel = json.dumps({
-            "model" : llmModel.lower(), # Das LLM Modell, was genutzt werden soll
-            "prompt": ' '.join(args),# Der Prompt vom User
-            "stream": True              # Ob es als Stream ausgegeben werden soll (Einfach auf True lassen)
-        })
-    async with ctx.typing():
-    
-    # Code von Leo und Pascal angepasst
-        with requests.post(url="http://127.0.0.1:11434/api/generate" , data=questionModel, stream=True) as response:
-            for line in response.iter_lines():
-                if line:
-                    answer += json.loads(line)["response"]
-                    await asyncio.sleep(2)
-    await ctx.send(answer)
-
+# Log-In-Confirmation
 @bot.event
 async def on_ready():
     print(f'We have logged in as {bot.user}')
 
-
+# command for getting lecture plan
 @bot.command()
 async def embed(ctx):
     async with ctx.typing():
@@ -107,5 +84,5 @@ async def embed(ctx):
 
     
 
-
+# running bot
 bot.run(token[0])
