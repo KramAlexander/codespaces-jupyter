@@ -26,12 +26,12 @@ async def on_ready():
 
 # command for getting lecture plan
 @bot.command()
-async def embed(ctx):
+async def lecture(ctx,date_entry):
     async with ctx.typing():
         await asyncio.sleep(2)
-    
+    year, month, day = map(int, date_entry.split('-'))
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
-    target_date = datetime(2023, 12, 20)
+    target_date = datetime(year, month, day) #style 2023, 12, 20
     response = requests.get(cal_url)
     if response.status_code == 200:
                 # Parse the iCal data
