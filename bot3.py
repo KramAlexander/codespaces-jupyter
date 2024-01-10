@@ -24,8 +24,9 @@ bot.remove_command("help")
 async def on_ready():
     print(f'We have logged in as {bot.user}')
 
-# command for getting lecture plan
+# command for getting the actual lecture plan
 @bot.command()
+# input command has to be in format bot!lecture YEAR-MO-DA
 async def lecture(ctx,date_entry):
     async with ctx.typing():
         await asyncio.sleep(2)
