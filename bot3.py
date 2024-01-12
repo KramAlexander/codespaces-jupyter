@@ -32,14 +32,17 @@ class SimpleView(discord.ui.View):
       async def hello1(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today() - timedelta(days=1)
              await lectureplan(date_entry)
+             await interaction.response.defer()
       @discord.ui.button(label="Today",style=discord.ButtonStyle.green)
       async def hello2(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today()
              await lectureplan(date_entry)
+             await interaction.response.defer()
       @discord.ui.button(label="Tomorrow",style=discord.ButtonStyle.blurple)
       async def hello3(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today() + timedelta(days=1)
              await lectureplan(date_entry)
+             await interaction.response.defer()
         
 # command for getting the actual lecture plan
 @bot.command()
@@ -80,7 +83,7 @@ async def lectureplan(date_entry):
                             'start_time': start_time.strftime("%H:%M" + ' Uhr'),
                             'end_time': end_time.strftime("%H:%M" + ' Uhr')
                         })
-
+                    
             # Print all events for the target date
                 for event in target_date_events:
                     embed = discord.Embed(
@@ -99,7 +102,7 @@ async def lectureplan(date_entry):
                     print("-----")
                     await data.send(embed=embed) 
 
-                        
+                         
     else:
                 print(f"Failed to retrieve the iCal data. Status code: {response.status_code}")
     
