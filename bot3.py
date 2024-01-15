@@ -30,20 +30,30 @@ async def on_ready():
 class SimpleView(discord.ui.View):
       
       # button for yesterday's lecture plan
-      @discord.ui.button(label="Yesterday",style=discord.ButtonStyle.blurple)
+      @discord.ui.button(label="Montag",style=discord.ButtonStyle.blurple)
       async def hello1(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today() - timedelta(days=1)
              await lectureplan(date_entry)
              await interaction.response.defer()
       # button for today's lecture plan
-      @discord.ui.button(label="Today",style=discord.ButtonStyle.green)
+      @discord.ui.button(label="Dienstag",style=discord.ButtonStyle.green)
       async def hello2(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today()
              await lectureplan(date_entry)
              await interaction.response.defer()
       # button for tomorrow's lecture plan
-      @discord.ui.button(label="Tomorrow",style=discord.ButtonStyle.blurple)
+      @discord.ui.button(label="Mittwoch",style=discord.ButtonStyle.blurple)
       async def hello3(self,interaction:discord.Interaction,button: discord.ui.Button):
+             date_entry=date.today() + timedelta(days=1)
+             await lectureplan(date_entry)
+             await interaction.response.defer()
+      @discord.ui.button(label="Donnerstag",style=discord.ButtonStyle.green)
+      async def hello4(self,interaction:discord.Interaction,button: discord.ui.Button):
+             date_entry=date.today() + timedelta(days=1)
+             await lectureplan(date_entry)
+             await interaction.response.defer()
+      @discord.ui.button(label="Freitag",style=discord.ButtonStyle.blurple)
+      async def hello5(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today() + timedelta(days=1)
              await lectureplan(date_entry)
              await interaction.response.defer()
