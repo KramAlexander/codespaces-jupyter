@@ -14,8 +14,9 @@ with open('token.txt') as file:
     token = file.readlines()
 
 data = None
+data2 = None
 counter = 0
-
+# start-message of bot
 @bot.event
 async def on_ready():
     print("Bot is up and Ready!")
@@ -27,17 +28,41 @@ async def on_ready():
 
 @bot.tree.command(name="lecture")
 async def lecture(interaction: discord.Interaction):
-    date_entry=date.today()
+    channel = bot.get_channel(1184076609779671111)
     global data
+    global data2
     data = interaction
-    await lecture_data(date_entry)
+    view =SimpleView()
+    await channel.send(view=view)
+    
 
-
+       
+class SimpleView(discord.ui.View):
+      
+      # button for yesterday's lecture plan
+      @discord.ui.button(label="Yesterday",style=discord.ButtonStyle.blurple)
+      async def hello1(self,interaction:discord.Interaction,button: discord.ui.Button):
+             date_entry=date.today() - timedelta(days=1)
+             await lecture_data(date_entry)
+             await interaction.response.defer()
+      # button for today's lecture plan
+      @discord.ui.button(label="Today",style=discord.ButtonStyle.green)
+      async def hello2(self,interaction:discord.Interaction,button: discord.ui.Button):
+             date_entry=date.today()
+             await interaction.response.defer()
+             await lecture_data(date_entry)           
+      # button for tomorrow's lecture plan
+      @discord.ui.button(label="Tomorrow",style=discord.ButtonStyle.blurple)
+      async def hello3(self,interaction:discord.Interaction,button: discord.ui.Button):
+             date_entry=date.today() + timedelta(days=1)
+             await lecture_data(date_entry)
+             await interaction.response.defer()
 
 
 async def lecture_data(date_entry):
     global data
     interaction = data
+    
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
     target_date = date_entry #style 2023, 12, 20
     response = requests.get(cal_url)
@@ -46,7 +71,7 @@ async def lecture_data(date_entry):
                 cal_data = response.text
                 # Parse the iCal data using the icalendar library
                 cal = Calendar.from_ical(cal_data)
-                print(cal)
+                
                 # Extract and print events
                 target_date_events = []
                 for event in cal.walk('VEVENT'):
@@ -65,9 +90,10 @@ async def lecture_data(date_entry):
                                 'end_time': end_time.strftime("%H:%M" + ' Uhr')
                             })
 
-    for event in target_date_events:
+    for event in (target_date_events):
+                            channel = bot.get_channel(1184076609779671111)
                             embed = discord.Embed(
-            
+                                 
                             title=event['summary'],
                             #description=date,
                             color=discord.Color.blue()  # You can set the color of the embed
@@ -75,11 +101,11 @@ async def lecture_data(date_entry):
                             # Add fields to the embed
                             embed.add_field(name='Beginn', value=event['start_time'], inline=False)
                             embed.add_field(name='Ende', value=event['end_time'], inline=True)
-                        
+                    
                             print(f"Summary: {event['summary']}")
                             #print(f"Start Time: {event['start_time']}")
                             print(f"End Time: {event['end_time']}")
                             print("-----")
-                            await interaction.response.send_message(embed=embed)
+                            await channel.send(embed=embed)
 
 bot.run(token[0])
