@@ -8,14 +8,15 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+# bot declaration
 bot = commands.Bot(command_prefix="!",intents = discord.Intents.all())
 # opening token from token.txt
 with open('token.txt') as file:
     token = file.readlines()
 
 data = None
-data2 = None
-counter = 0
+
+
 # start-message of bot
 @bot.event
 async def on_ready():
@@ -36,9 +37,8 @@ async def lecture(interaction: discord.Interaction):
     await channel.send(view=view)
     
 
-       
-class SimpleView(discord.ui.View):
-      
+# creating the buttons
+class SimpleView(discord.ui.View):  
       # button for yesterday's lecture plan
       @discord.ui.button(label="Yesterday",style=discord.ButtonStyle.blurple)
       async def hello1(self,interaction:discord.Interaction,button: discord.ui.Button):
@@ -55,14 +55,13 @@ class SimpleView(discord.ui.View):
       @discord.ui.button(label="Tomorrow",style=discord.ButtonStyle.blurple)
       async def hello3(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today() + timedelta(days=1)
-             await lecture_data(date_entry)
-             await interaction.response.defer()
+             
+             await interaction.response.send_message(await lecture_data(date_entry))
 
 
+# method called by buttonsclass
 async def lecture_data(date_entry):
     global data
-    interaction = data
-    
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
     target_date = date_entry #style 2023, 12, 20
     response = requests.get(cal_url)
@@ -80,7 +79,7 @@ async def lecture_data(date_entry):
                             summary = event.get('summary')
                             end_time = event.get('dtend').dt
                         
-                            # Convert UTC+0 to UTC+1
+                            # Converting UTC+0 to UTC+1
                             target_timezone = pytz.timezone('Europe/Paris')  # Replace with your target timezone
                             start_time = start_time.astimezone(target_timezone)
                             end_time = end_time.astimezone(target_timezone)
@@ -89,7 +88,7 @@ async def lecture_data(date_entry):
                                 'start_time': start_time.strftime("%H:%M" + ' Uhr'),
                                 'end_time': end_time.strftime("%H:%M" + ' Uhr')
                             })
-
+    # printing out all lectures for the fitting date through discord-embeds
     for event in (target_date_events):
                             channel = bot.get_channel(1184076609779671111)
                             embed = discord.Embed(
@@ -103,9 +102,10 @@ async def lecture_data(date_entry):
                             embed.add_field(name='Ende', value=event['end_time'], inline=True)
                     
                             print(f"Summary: {event['summary']}")
-                            #print(f"Start Time: {event['start_time']}")
+                            print(f"Start Time: {event['start_time']}")
                             print(f"End Time: {event['end_time']}")
                             print("-----")
                             await channel.send(embed=embed)
 
+# running bot with token
 bot.run(token[0])
