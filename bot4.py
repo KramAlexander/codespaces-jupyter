@@ -16,7 +16,6 @@ with open('token.txt') as file:
 
 data = None
 
-
 # start-message of bot
 @bot.event
 async def on_ready():
@@ -36,7 +35,6 @@ async def lecture(interaction: discord.Interaction):
     view =SimpleView()
     await interaction.response.send_message(view=view)
     
-
 # creating the buttons
 class SimpleView(discord.ui.View):  
       # button for yesterday's lecture plan
@@ -50,7 +48,7 @@ class SimpleView(discord.ui.View):
       async def hello2(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today()
              await interaction.response.defer()
-             await lecture_data(date_entry)           
+             await lecture_data(date_entry, interaction.channel)           
       # button for tomorrow's lecture plan
       @discord.ui.button(label="Tomorrow",style=discord.ButtonStyle.blurple)
       async def hello3(self,interaction:discord.Interaction,button: discord.ui.Button):
@@ -61,7 +59,7 @@ class SimpleView(discord.ui.View):
                     print("error")
 
 # method called by buttonsclass
-async def lecture_data(date_entry):
+async def lecture_data(date_entry, channel):
     global data
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
     target_date = date_entry #style 2023, 12, 20
@@ -100,7 +98,7 @@ async def lecture_data(date_entry):
                             })
     # printing out all lectures for the fitting date through discord-embeds
     for event in (target_date_events):
-                            channel = bot.get_channel(1184076609779671111)
+                            #channel = bot.get_channel(1184076609779671111)
                             embed = discord.Embed(
                             title = "**"+str(event['summary'])+"**",
                             #description=date,
@@ -118,6 +116,13 @@ async def lecture_data(date_entry):
                             print(f"Room: {event['room']}")
                             print("-----")
                             await channel.send(embed=embed)
+
+@bot.tree.command(name="calculate")
+async def lecture(interaction:discord.Interaction, number:int):
+       result = number *2
+       await interaction.response.send_message(f'The result ist: {result}')
+       
+
 
 # running bot with token
 bot.run(token[0])
