@@ -48,7 +48,7 @@ class SimpleView(discord.ui.View):
       async def hello2(self,interaction:discord.Interaction,button: discord.ui.Button):
              date_entry=date.today()
              await interaction.response.defer()
-             await lecture_data(date_entry, interaction.channel)           
+             await lecture_data(date_entry)           
       # button for tomorrow's lecture plan
       @discord.ui.button(label="Tomorrow",style=discord.ButtonStyle.blurple)
       async def hello3(self,interaction:discord.Interaction,button: discord.ui.Button):
