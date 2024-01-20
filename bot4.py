@@ -59,7 +59,7 @@ class SimpleView(discord.ui.View):
                     print("error")
 
 # method called by buttonsclass
-async def lecture_data(date_entry, channel):
+async def lecture_data(date_entry):
     global data
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
     target_date = date_entry #style 2023, 12, 20
@@ -98,7 +98,7 @@ async def lecture_data(date_entry, channel):
                             })
     # printing out all lectures for the fitting date through discord-embeds
     for event in (target_date_events):
-                            #channel = bot.get_channel(1184076609779671111)
+                            channel = bot.get_channel(1184076609779671111)
                             embed = discord.Embed(
                             title = "**"+str(event['summary'])+"**",
                             #description=date,
@@ -117,10 +117,16 @@ async def lecture_data(date_entry, channel):
                             print("-----")
                             await channel.send(embed=embed)
 
-@bot.tree.command(name="calculate")
-async def lecture(interaction:discord.Interaction, number:int):
-       result = number *2
-       await interaction.response.send_message(f'The result ist: {result}')
+@bot.tree.command(name="test")
+async def lecture(interaction:discord.Interaction):
+       channel = bot.get_channel(1184076609779671111)
+       embed2 = discord.Embed(
+              title = "test",
+              color = discord.Color.red()
+       )
+       embed2.add_field(name='__Beginn:__', value="test", inline=False)
+       await interaction.response.defer()
+       await channel.send(embed=embed2)
        
 
 
