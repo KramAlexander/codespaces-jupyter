@@ -119,31 +119,41 @@ async def lecture_data(date_entry):
 
 @bot.tree.command(name="test")
 async def lecture(interaction:discord.Interaction):
-       channel = bot.get_channel(1184076609779671111)
-       embed2 = discord.Embed(
-              title = "test",
-              color = discord.Color.red()
-       )
-       view = buttontest()
-       embed2.add_field(name=view==view, value="test", inline=False)
-       embed2.insert_field_at
-       await interaction.response.defer()
-       await channel.send(embed=embed2)
-       
+  jan1 = datetime(2024, 1, 14, 0, 0, 0, 0).weekday()
+  firstmonday = datetime(2024, 1, 1, 12, 0, 0, 0) + timedelta(days=1)
+  await interaction.response.send_message((firstmonday+timedelta(days=1)).strftime("%d,%M"))
+
+def jan1():
+  #year = datetime.today().strftime("%Y")
+  jan1 = datetime(int(2025), 1, 1, 0, 0, 0, 0).weekday()
+  return jan1
 @bot.tree.command(name="buttontest")
 async def lecture(interaction: discord.Interaction):
     channel = bot.get_channel(1184076609779671111)
     global data
     global data2
-    data = interaction
-    view =buttons() 
+    #data = interaction
+    view =buttons()
     await interaction.response.send_message(view=view)
 
 def buttons():
-  buttons = []
-  view = View()
-  for i in range(1,26):
-   view.add_item(Button(style=discord.ButtonStyle.green, label=i))
-  return view
+       for i in range(0,6):
+         if jan1() - i == 0:
+              if i == 0:
+               firstmonday = datetime(2025, 1, 1, 12, 0, 0, 0) + timedelta(days=i)
+               print(firstmonday)
+              else:
+               firstmonday = datetime(2025, 1, 1, 12, 0, 0, 0) + timedelta(days=7-i)
+              view = View()
+              view.add_item(Button(style=discord.ButtonStyle.gray,label="Previous",row = 0))
+              view.add_item(Button(style=discord.ButtonStyle.gray,label="lecture from January 01 - 05",row=0))
+              view.add_item(Button(style=discord.ButtonStyle.gray,label="Next",row=0))
+              for j in range(0,5):
+                     if j % 2 !=0:
+                            view.add_item(Button(style=discord.ButtonStyle.green, label=str((firstmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
+                     else:
+                            view.add_item(Button(style=discord.ButtonStyle.blurple, label=str((firstmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
+       return view
+        
 # running bot with token
 bot.run(token[0])
