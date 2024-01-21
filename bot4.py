@@ -7,6 +7,7 @@ from datetime import date, datetime, timedelta
 import discord
 from discord import app_commands
 from discord.ext import commands
+from discord.ui import Button, View
 
 # bot declaration
 bot = commands.Bot(command_prefix="!",intents = discord.Intents.all())
@@ -69,7 +70,6 @@ async def lecture_data(date_entry):
                 cal_data = response.text
                 # Parse the iCal data using the icalendar library
                 cal = Calendar.from_ical(cal_data)
-                print(cal)
                 # Extract and print events
                 target_date_events = []
                 for event in cal.walk('VEVENT'):
@@ -124,11 +124,26 @@ async def lecture(interaction:discord.Interaction):
               title = "test",
               color = discord.Color.red()
        )
-       embed2.add_field(name='__Beginn:__', value="test", inline=False)
+       view = buttontest()
+       embed2.add_field(name=view==view, value="test", inline=False)
+       embed2.insert_field_at
        await interaction.response.defer()
        await channel.send(embed=embed2)
        
+@bot.tree.command(name="buttontest")
+async def lecture(interaction: discord.Interaction):
+    channel = bot.get_channel(1184076609779671111)
+    global data
+    global data2
+    data = interaction
+    view =buttons() 
+    await interaction.response.send_message(view=view)
 
-
+def buttons():
+  buttons = []
+  view = View()
+  for i in range(1,26):
+   view.add_item(Button(style=discord.ButtonStyle.green, label=i))
+  return view
 # running bot with token
 bot.run(token[0])
