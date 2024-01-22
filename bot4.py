@@ -59,14 +59,14 @@ class SimpleView(discord.ui.View):
                 await interaction.response.send_message(await lecture_data(date_entry))
              except:
                     print("error")
-
 # method called by buttonsclass
 async def lecture_data(date_entry):
     print("erreicht")
     global data
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
     target_date = date_entry #style 2023, 12, 20
-    print(target_date)
+    print(date_entry)
+    print(type(date_entry))
     response = requests.get(cal_url)
     if response.status_code == 200:
                 # Parse the iCal data
@@ -75,8 +75,8 @@ async def lecture_data(date_entry):
                 cal = Calendar.from_ical(cal_data)
                 # Extract and print events
                 target_date_events = []
-                for event in cal('VEVENT'):
-                        start_time = event.get('.walkdtstart').dt
+                for event in cal.walk('VEVENT'):
+                        start_time = event.get('dtstart').dt
                        
                         #print(start_time)
                         #print(target_date)

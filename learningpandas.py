@@ -8,8 +8,8 @@ mydataset = {
 calories = {"day1": 420, "day2": 380, "day3": 390}
 
 data = {
-  "calories": [420, 380, 390],
-  "duration": [50, 40, 45]
+  "numbers": [420, 380, 390],
+  "time": [50, 40, 45]
 }
 a = [1,7,3]
 myvar = pd.DataFrame(mydataset)

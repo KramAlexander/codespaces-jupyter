@@ -72,6 +72,8 @@ async def lectureplan(date_entry):
     #year, month, day = map(int, date_entry.split('-'))
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
     target_date = date_entry #style 2023, 12, 20
+    print(date_entry)
+    print(type(date_entry))
     response = requests.get(cal_url)
     if response.status_code == 200:
                 # Parse the iCal data
@@ -82,7 +84,7 @@ async def lectureplan(date_entry):
                 # Extract and print events
                 target_date_events = []
                 print("Hello?!")
-                
+            
                 for event in cal.walk('VEVENT'):
                         start_time = event.get('dtstart').dt
                         counter = 0
