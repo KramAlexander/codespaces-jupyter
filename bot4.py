@@ -16,8 +16,9 @@ with open('token.txt') as file:
     token = file.readlines()
 
 data = None
+counter = 0
 
-# start-message of bot
+#start-message of bot
 @bot.event
 async def on_ready():
     print("Bot is up and Ready!")
@@ -61,9 +62,11 @@ class SimpleView(discord.ui.View):
 
 # method called by buttonsclass
 async def lecture_data(date_entry):
+    print("erreicht")
     global data
     cal_url = "https://stuv.app/MOS-TINF23A/ical"
     target_date = date_entry #style 2023, 12, 20
+    print(target_date)
     response = requests.get(cal_url)
     if response.status_code == 200:
                 # Parse the iCal data
@@ -72,12 +75,16 @@ async def lecture_data(date_entry):
                 cal = Calendar.from_ical(cal_data)
                 # Extract and print events
                 target_date_events = []
-                for event in cal.walk('VEVENT'):
-                        start_time = event.get('dtstart').dt
+                for event in cal('VEVENT'):
+                        start_time = event.get('.walkdtstart').dt
+                       
+                        #print(start_time)
+                        #print(target_date)
                         if start_time.date() == target_date:
                             summary = event.get('summary')
                             end_time = event.get('dtend').dt
                             room = event.get('location')
+                            print("x")
                             if (len(room)==22):
                                    room = room[:7]
                             elif(len(room)==23):
@@ -85,7 +92,6 @@ async def lecture_data(date_entry):
                             elif(len(room)==25):
                                    room = room[:10]
                                    
-                        
                             # Converting UTC+0 to UTC+1
                             target_timezone = pytz.timezone('Europe/Paris')  # Replace with your target timezone
                             start_time = start_time.astimezone(target_timezone)
@@ -95,7 +101,7 @@ async def lecture_data(date_entry):
                                 'start_time': start_time.strftime("%H:%M" + ' Uhr'),
                                 'end_time': end_time.strftime("%H:%M" + ' Uhr'),
                                 'room': room
-                            })
+                            })                           
     # printing out all lectures for the fitting date through discord-embeds
     for event in (target_date_events):
                             channel = bot.get_channel(1184076609779671111)
@@ -117,43 +123,109 @@ async def lecture_data(date_entry):
                             print("-----")
                             await channel.send(embed=embed)
 
-@bot.tree.command(name="test")
-async def lecture(interaction:discord.Interaction):
-  jan1 = datetime(2024, 1, 14, 0, 0, 0, 0).weekday()
-  firstmonday = datetime(2024, 1, 1, 12, 0, 0, 0) + timedelta(days=1)
-  await interaction.response.send_message((firstmonday+timedelta(days=1)).strftime("%d,%M"))
-
 def jan1():
-  #year = datetime.today().strftime("%Y")
-  jan1 = datetime(int(2025), 1, 1, 0, 0, 0, 0).weekday()
+  year = datetime.today().strftime("%Y")
+  jan1 = datetime(int(year), 1, 1, 0, 0, 0, 0).weekday()
   return jan1
+
 @bot.tree.command(name="buttontest")
-async def lecture(interaction: discord.Interaction):
+async def lecture(interaction: discord.ui.Button):
     channel = bot.get_channel(1184076609779671111)
     global data
     global data2
-    #data = interaction
-    view =buttons()
+    data = interaction
+    view = await buttons(interaction)
     await interaction.response.send_message(view=view)
 
-def buttons():
+async def buttons(interaction: discord.Interaction):
+       global data
+       data = interaction
        for i in range(0,6):
-         if jan1() - i == 0:
-              if i == 0:
-               firstmonday = datetime(2025, 1, 1, 12, 0, 0, 0) + timedelta(days=i)
-               print(firstmonday)
+              if jan1() == 0:
+               year = datetime.today().strftime("%Y")
+               firstmonday = datetime(int(year), 1, 1, 12, 0, 0, 0) + timedelta(days=i)
               else:
-               firstmonday = datetime(2025, 1, 1, 12, 0, 0, 0) + timedelta(days=7-i)
+               firstmonday = datetime(int(year), 1, 1, 12, 0, 0, 0) + timedelta(days=7-i)
               view = View()
-              view.add_item(Button(style=discord.ButtonStyle.gray,label="Previous",row = 0))
-              view.add_item(Button(style=discord.ButtonStyle.gray,label="lecture from January 01 - 05",row=0))
-              view.add_item(Button(style=discord.ButtonStyle.gray,label="Next",row=0))
-              for j in range(0,5):
+
+              async def callback1(interaction):             
+               global counter
+               counter = counter + 1
+               print(counter)
+               startmonday = firstmonday+timedelta(days=7*counter)
+               print(startmonday)
+               view2 =View()              
+               for j in range(0,5):
                      if j % 2 !=0:
-                            view.add_item(Button(style=discord.ButtonStyle.green, label=str((firstmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
+                            temp = j
+                            j = (Button(custom_id = f"{interaction.id}~{startmonday+timedelta(days=temp)}",style=discord.ButtonStyle.green, label=str((startmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
+                            view2.add_item(j)
+                            j.callback = lambda j: callback2(j)
                      else:
-                            view.add_item(Button(style=discord.ButtonStyle.blurple, label=str((firstmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
-       return view
-        
+                            temp = j
+                            j = (Button(custom_id = f"{interaction.id}~{startmonday+timedelta(days=temp)}",style=discord.ButtonStyle.blurple, label=str((startmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
+                            view2.add_item(j)
+                            j.callback = lambda j: callback2(j)
+              
+               button=(Button(style=discord.ButtonStyle.gray,label="Previous",row = 0))
+               view2.add_item(button)
+               # Button general
+               button2=(Button(style=discord.ButtonStyle.gray,label="lecture from January 01 - 05",row=0))
+               view2.add_item(button2)
+               # Button next
+               button3=(Button(style=discord.ButtonStyle.gray,label="Next",row=0))
+               view2.add_item(button3)
+               button3.callback = callback1
+               await interaction.response.edit_message(view=view2)
+                         
+              # Button previous
+              button=(Button(style=discord.ButtonStyle.gray,label="Previous",row = 0))
+              view.add_item(button)
+              button.callback = callback1
+              # Button general
+              button2=(Button(style=discord.ButtonStyle.gray,label="lecture from January 01 - 05",row=0))
+              view.add_item(button2)
+              button2.callback = callback1
+              # Button next
+              button3=(Button(style=discord.ButtonStyle.gray,label="Next",row=0))
+              view.add_item(button3)
+              button3.callback = callback1
+
+              async def callback2(interaction: discord.Interaction):
+                      #date_entry=date.today()+ timedelta(days=1)####################
+                   # try:
+                      print(interaction.data)
+                      date = interaction.data['custom_id'].split('~')[1]
+                      await lecture_data(datetime.strptime(date,"%Y-%m-%d %H:%M:%S").date())
+                      await interaction.response.defer()
+                      
+                    #except Exception as e:
+                       #     print(e)
+              temp = []
+              callback = []
+              for j in range(0,5):
+                     if j % 2 != 0:
+                            temp.append(j)
+                            temp2 = j
+                            j = (Button(custom_id = f"{interaction.id}~{firstmonday+timedelta(days=temp2)}",style=discord.ButtonStyle.green, label=str((firstmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
+                            view.add_item(j)                             
+                            j.callback = lambda j: callback2(j)
+                            callback.append(j.callback)
+                     else:
+                            temp2 = j
+                            j = (Button(custom_id = f"{interaction.id}~{firstmonday+timedelta(days=temp2)}",style=discord.ButtonStyle.blurple, label=str((firstmonday+timedelta(days=j)).strftime("%d.%m")),row=1))
+                            view.add_item(j)
+                            j.callback = lambda j: callback2(j)
+                            callback.append(j.callback)
+
+                     
+              
+              #print(callback)
+              #print(temp) 
+              
+              return view
+              
+       
+
 # running bot with token
 bot.run(token[0])
