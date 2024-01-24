@@ -1,5 +1,5 @@
 import random
-input = input("Please choose: rock, paper, scissor")
+input = input("Please choose: rock, paper, scissor\n")
 choices = ["rock", "paper", "scissor"]
 computer = random.choice(choices)
 
