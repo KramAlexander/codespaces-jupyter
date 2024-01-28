@@ -1,4 +1,4 @@
-# getting user inputs for number and power
+# getting user inputs for number and power 
 number = int(input("Please enter a number:\n"))
 exponent = int(input("Please enter a number for the exponent:\n"))
 

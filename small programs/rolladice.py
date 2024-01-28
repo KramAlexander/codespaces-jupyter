@@ -5,5 +5,5 @@ dice = [1,2,3,4,5,6]
 
 # printing random number 
 print("-----------------")
-print(f"The dice says: {random.choice(dice)}")
+print(f"You rolled a {random.choice(dice)}!")
 print("-----------------")
