@@ -8,6 +8,7 @@ wn.title("Turtle")
 skk = turtle.Turtle()
 skk.color("white")
 skk.speed(10000)
+# many colors 
 col = ['violet', 'indigo', 'blue', 
        'green', 'yellow', 'orange', 'red','violet', 'indigo', 'blue', 
        'green', 'yellow', 'orange', 'red','violet', 'indigo', 'blue', 
