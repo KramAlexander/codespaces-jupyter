@@ -7,4 +7,3 @@ dice = [1,2,3,4,5,6]
 print("-----------------")
 print(f"You rolled a {random.choice(dice)}!")
 print("-----------------")
-print(random.rand)
