@@ -1,4 +1,4 @@
-import main
+import DarkClyde.main as main
 from icalendar import Calendar
 from datetime import date, datetime, timedelta
 import discord
