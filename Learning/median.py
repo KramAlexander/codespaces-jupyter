@@ -28,6 +28,7 @@ for number in range(len(numbers)):
     new_list2.append(max)
     numbers.remove(max)
 
+# calculating the median
 global median_list
 median_list = new_list1
 # median 
@@ -39,4 +40,5 @@ def median():
         median = median_list[int(len(median_list)/2)]
     return median
 
+# print the median
 print(median())
