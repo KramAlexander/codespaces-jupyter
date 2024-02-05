@@ -34,7 +34,7 @@ clock = pygame.time.Clock()
 game_over = False
     
 start_time = time.time()
-background = pygame.image.load("snake.png")
+background = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/grass-lawn-abstract-seamless-background-game-asset-pattern-natural-field-herbs-top-view_191307-601.jpg.jpg")
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))          
 
 while not game_over:
