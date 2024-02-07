@@ -7,7 +7,7 @@ pygame.init()
 # Set up display
 WIDTH, HEIGHT = 800, 600
 GRID_SIZE = 20
-snake_size = 1
+snake_size = 3
 snake_speed = GRID_SIZE
 score = 0
 
@@ -21,9 +21,16 @@ BLUE = (0,0,255)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
+snake_image = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/snake_body.jpg")
+snake_image = pygame.transform.scale(snake_image, (GRID_SIZE, GRID_SIZE))
+
+
+snake_head = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/snake_head.jpg")
+snake_head = pygame.transform.scale(snake_head, (GRID_SIZE, GRID_SIZE))
 # Initialize snake
-snake = [(WIDTH // 2, HEIGHT // 2)]
-snake_direction = (0, 0)
+initial_snake_size = 3
+snake = [(WIDTH // 2 - i * GRID_SIZE, HEIGHT // 2) for i in range(initial_snake_size)]
+snake_direction = (20, 0)
 
 # Initialize food
 food_pos = (random.randint(0, (WIDTH - GRID_SIZE) // GRID_SIZE) * GRID_SIZE,
@@ -72,10 +79,14 @@ while not game_over:
     screen.blit(background, (0, 0))
     
     # Draw snake
-    for segment in snake:
-        pygame.draw.rect(screen, BLUE, (segment[0], segment[1], GRID_SIZE, GRID_SIZE))
-
-    # Draw food
+    #for segment in snake:
+    #    pygame.draw.rect(screen, snake, (segment[0], segment[1], GRID_SIZE, GRID_SIZE))
+    # Draw snake
+    for index, segment in enumerate(snake):
+        if index == 0:  # Check if it's the head
+            screen.blit(snake_head, (segment[0], segment[1]))
+        else:
+            screen.blit(snake_image, (segment[0], segment[1]))
     pygame.draw.rect(screen, RED, (food_pos[0], food_pos[1], GRID_SIZE, GRID_SIZE))
 
     # Display score
