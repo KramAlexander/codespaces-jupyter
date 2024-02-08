@@ -21,6 +21,9 @@ BLUE = (0,0,255)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
+apple = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/apple.png")
+apple = pygame.transform.scale(apple, (GRID_SIZE, GRID_SIZE))
+
 snake_image = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/snake_body.jpg")
 snake_image = pygame.transform.scale(snake_image, (GRID_SIZE, GRID_SIZE))
 
@@ -87,7 +90,9 @@ while not game_over:
             screen.blit(snake_head, (segment[0], segment[1]))
         else:
             screen.blit(snake_image, (segment[0], segment[1]))
-    pygame.draw.rect(screen, RED, (food_pos[0], food_pos[1], GRID_SIZE, GRID_SIZE))
+
+            screen.blit(apple,(food_pos[0], food_pos[1]))
+    #pygame.draw.rect(screen, RED, (food_pos[0], food_pos[1], GRID_SIZE, GRID_SIZE))
 
     # Display score
     font = pygame.font.SysFont(None, 35)
