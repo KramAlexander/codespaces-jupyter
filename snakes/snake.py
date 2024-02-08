@@ -11,25 +11,29 @@ snake_size = 3
 snake_speed = GRID_SIZE
 score = 0
 
-# Colors
+# colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK=(0,0,0)
 BLUE = (0,0,255)
-# Initialize screen
+
+# display screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
+# loading apple image
 apple = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/apple.png")
 apple = pygame.transform.scale(apple, (GRID_SIZE, GRID_SIZE))
 
+# loading snake image
 snake_image = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/snake_body.jpg")
 snake_image = pygame.transform.scale(snake_image, (GRID_SIZE, GRID_SIZE))
 
-
+# loading snake head
 snake_head = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/snake_head.jpg")
 snake_head = pygame.transform.scale(snake_head, (GRID_SIZE, GRID_SIZE))
+
 # Initialize snake
 initial_snake_size = 3
 snake = [(WIDTH // 2 - i * GRID_SIZE, HEIGHT // 2) for i in range(initial_snake_size)]
@@ -73,18 +77,13 @@ while not game_over:
     else:
         snake.pop()
 
-    # Check for collisions with itself
+    # check for collisions with itself
     if new_head in snake[1:]:
         game_over = True
-
-    # Draw everything
-    #screen.fill(BLACK)
+    # background
     screen.blit(background, (0, 0))
     
-    # Draw snake
-    #for segment in snake:
-    #    pygame.draw.rect(screen, snake, (segment[0], segment[1], GRID_SIZE, GRID_SIZE))
-    # Draw snake
+    # draw the snake
     for index, segment in enumerate(snake):
         if index == 0:  # Check if it's the head
             screen.blit(snake_head, (segment[0], segment[1]))
@@ -92,17 +91,16 @@ while not game_over:
             screen.blit(snake_image, (segment[0], segment[1]))
 
             screen.blit(apple,(food_pos[0], food_pos[1]))
-    #pygame.draw.rect(screen, RED, (food_pos[0], food_pos[1], GRID_SIZE, GRID_SIZE))
-
-    # Display score
+    
+    # score
     font = pygame.font.SysFont(None, 35)
     score_text = font.render(f"Score: {score}", True, (255, 255, 255))
     screen.blit(score_text, (10, 10))
 
-    # Get the current time
+    # time (only for console)
     current_time = time.time()
 
-    # Calculate the elapsed time
+    # calculate elapsed time
     elapsed_time = current_time - start_time
     pygame.display.flip()
 
