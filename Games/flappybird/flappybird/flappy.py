@@ -5,8 +5,9 @@ HEIGHT = 700
 white = (255, 255, 255)
 red = (255, 0, 0)
 brown = (153,121,80)
-grass_green = (46,139,87)
+green_grass = (46,139,87)
 sky_blue = (136,206,235)
+
 
 pygame.init()
 
