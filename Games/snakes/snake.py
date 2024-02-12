@@ -23,15 +23,15 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
 # loading apple image
-apple = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/apple.png")
+apple = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/Games/snakes/apple.png")
 apple = pygame.transform.scale(apple, (GRID_SIZE, GRID_SIZE))
 
 # loading snake image
-snake_image = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/snake_body.jpg")
+snake_image = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/Games/snakes/snake_body.jpg")
 snake_image = pygame.transform.scale(snake_image, (GRID_SIZE, GRID_SIZE))
 
 # loading snake head
-snake_head = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/snake_head.jpg")
+snake_head = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/Games/snakes/snake_head.jpg")
 snake_head = pygame.transform.scale(snake_head, (GRID_SIZE, GRID_SIZE))
 
 # Initialize snake
@@ -48,7 +48,7 @@ clock = pygame.time.Clock()
 game_over = False
     
 start_time = time.time()
-background = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/snakes/37716068933bae2f9b11ff90bc91b015.jpg")
+background = pygame.image.load("/Users/alexanderkram/Library/Mobile Documents/com~apple~CloudDocs/codespaces-jupyter/Games/snakes/37716068933bae2f9b11ff90bc91b015.jpg")
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))          
 
 while not game_over:
