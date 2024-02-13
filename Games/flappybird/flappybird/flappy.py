@@ -1,5 +1,6 @@
 import pygame
 import random
+
 def flappybirds():
     pygame.init()
     # declaring propetries of my game (size and colors)

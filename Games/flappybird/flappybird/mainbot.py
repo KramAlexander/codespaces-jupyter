@@ -24,9 +24,8 @@ async def on_ready():
 
 @bot.tree.command(name="play")
 async def play(interaction: discord.Interaction):
-    await interaction.response.send_message("Have fun")
     flappy.flappybirds()
-    
+    await interaction.response.send_message("Have fun")
     
 
 # running bot with token
