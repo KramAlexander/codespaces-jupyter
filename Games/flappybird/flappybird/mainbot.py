@@ -15,10 +15,10 @@ with open('token2.txt') as file:
 #start-message of bot
 @bot.event
 async def on_ready():
-    print("Bot is up and Ready!")
+    print("Dark Clydé is online")
     try:
         synced = await bot.tree.sync()
-        print(f"Synced {len(synced)} command(s)")
+        print(f"ou can use {len(synced)} command(s)")
     except Exception as e:
         print(e)
 
