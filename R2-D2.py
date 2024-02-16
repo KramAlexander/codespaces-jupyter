@@ -3,8 +3,7 @@ import discord
 import discord.utils
 from discord.ext import commands
 from discord.ui import Button, View
-data = None
-counter = 0
+number = 0
 # opening token from token.txt
 with open('token3.txt') as file:
     token = file.readlines()
@@ -29,20 +28,26 @@ async def on_ready():
 
 @bot.tree.command(name="countbutton",description="Have fun clicking :D")
 async def countbutton(interaction:discord.Interaction):
-            global button
-            button_view = View()
-            button = Button(style=discord.ButtonStyle.blurple, label="1")
-            button_view.add_item(button)
-            button.callback = lambda j: button_callback(j)
-
-                        # adding the button to the "buttons-collection" (= view)
-            await interaction.response.send_message(view=button_view)
-            
+                button_view = View()
+                button = Button(style=discord.ButtonStyle.blurple, label=f"{number}",custom_id='button_id')
+                button_view.add_item(button)
+                button.callback = lambda j: button_callback(j)
+                print("Hello")
+                            # adding the button to the "buttons-collection" (= view)
+                await interaction.response.send_message(view=button_view)
+def add_number():
+    global number
+    number = number + 1
+    return number
 async def button_callback(interaction: discord.Interaction):
-     new_button_view = View()
-     new_button = button(label="2")
-     new_button_view.add_item(new_button)
-     await interaction.response.send_message(view=new_button_view)
+     add_number()
+     if interaction.data['custom_id'] == 'button_id':
+        new_button_view = View(timeout=None)
+        button2 = Button(style=discord.ButtonStyle.blurple, label=f"{number}",custom_id='button_id')
+        new_button_view.add_item(button2)
+        button2.callback = lambda j: button_callback(j)
+     print(number)
+     await interaction.response.edit_message(view=new_button_view)
 
 # running the bot
 bot.run(token[0])
