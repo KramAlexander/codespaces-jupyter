@@ -1,0 +1,9 @@
+notebooks/data
+notebooks/cifar_net.pth
+.ipynb_checkpoints/
+token.txt
+pyhlia/.env
+pyhlia/main.py
+token2.txt
+pyhlia/pyhlia_lecture.py
+token3.txt
